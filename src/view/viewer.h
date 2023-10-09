@@ -6,7 +6,7 @@
 #include <QOpenGLShader>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLWidget>
-#include "../model/model.h"
+
 
 
 // #include "../../model/model.h"
@@ -60,9 +60,9 @@ class Viewer : public QOpenGLWidget, protected QOpenGLFunctions {
   QMatrix4x4 projection_matrix_;  ///< Матрица проекции перспективы
   QOpenGLShaderProgram* program_;  ///< Шейдерная программа
   QOpenGLBuffer vertex_buffer_;    ///< Буфер точек
-  QPoint pos_;  ///< Позиция нажатия пкм в окне отображения модели
+ /* QPoint pos_;  ///< Позиция нажатия пкм в окне отображения модели
   float x_rot_,
-      y_rot_;  ///< Смещение модели на координатах окна отображения модели
+      y_rot_; */ ///< Смещение модели на координатах окна отображения модели
   QVector4D bckgrnd_color_;  ///< Цвет фона
 //  QSettings* settings;  ///< Экземпляр настроек отображения моделей
 
@@ -80,7 +80,6 @@ class Viewer : public QOpenGLWidget, protected QOpenGLFunctions {
    *Загрузка модели по указанному пути
    */
   //int LoadModel(QString path);
-  Model* md_ = NULL;  ///< Создание экземпляра модели
 
   /**
    * Загрузка файла настроек

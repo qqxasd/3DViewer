@@ -21,6 +21,8 @@ set(PROJECT_SOURCES
         mainwindow.ui
         view/viewer.cc view/viewer.h
         model/model.h model/model.cc
+        controller/mwcontroller.h controller/mwcontroller.cc
+        view/shaders.qrc
 
 )
 

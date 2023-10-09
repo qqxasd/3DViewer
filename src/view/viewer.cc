@@ -6,9 +6,10 @@ using namespace s21;
 Viewer::Viewer(QWidget *parent) : QOpenGLWidget(parent) {
 //  settings = new QSettings(this);
 //  LoadSettings();
+    mw_cont_ = new MWController();
 }
 
-Viewer::~Viewer() { delete md_; }
+Viewer::~Viewer() { delete mw_cont_;}
 
 void Viewer::initializeGL() {
   initializeOpenGLFunctions();
@@ -31,16 +32,13 @@ void Viewer::paintGL() {
     glDisable(GL_LINE_STIPPLE);
   }
   glEnable(GL_PROGRAM_POINT_SIZE);
-
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   initShaders();
   program_->bind();
-
   glClearColor((GLfloat)background_color_[0], (GLfloat)background_color_[1],
                (GLfloat)background_color_[2], (GLfloat)background_color_[3]);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  if (md_ != NULL) {
     vertex_buffer_.bind();
     program_->setUniformValue("qt_ModelViewProjectionMatrix",
                               projection_matrix_);
@@ -64,7 +62,7 @@ void Viewer::paintGL() {
                        md_->s_.polygons[i].data);
       }*/
     }
-  }
+
   delete (program_);
 }
 
@@ -112,7 +110,7 @@ void Viewer::paintGL() {
 void Viewer::InitModel() {
   vertex_buffer_.create();
   vertex_buffer_.bind();
-  vertex_buffer_.allocate(md_->vertexes.data(), (md_->vertexes.size()) * sizeof(GLfloat));
+  vertex_buffer_.allocate(mw_cont_->GetVertexes(), (mw_cont_->GetVertexCount() * sizeof(GLfloat));
   vertex_buffer_.release();
 }
 

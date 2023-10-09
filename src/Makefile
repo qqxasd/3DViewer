@@ -53,7 +53,7 @@ style:
 	clang-format -i *.h model/*.h view/*.h controller/*.h model/tests/*.h
 	
 git:
-	git add *.cpp *.h *.cc model/*.cc model/*.h view/*.cc view/*.h 
+	git add *.cpp *.h *.cc model/*.cc model/*.h view/*.cc view/*.h controller/*.cc controller/*.h
 	git add Makefile
 	git add CMakeLists.txt
 	git add view/*.vsh view/*.fsh
