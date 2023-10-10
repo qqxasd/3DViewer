@@ -3,13 +3,13 @@
 #include <QMessageBox>
 #include <QMouseEvent>
 using namespace s21;
-Viewer::Viewer(QWidget *parent) : QOpenGLWidget(parent) {
+Viewer::Viewer(QWidget *parent) : QOpenGLWidget(parent), index_buffer_(QOpenGLBuffer::IndexBuffer) {
 //  settings = new QSettings(this);
 //  LoadSettings();
-    mw_cont_ = new MWController();
+
 }
 
-Viewer::~Viewer() { delete mw_cont_;}
+Viewer::~Viewer() { }
 
 void Viewer::initializeGL() {
   initializeOpenGLFunctions();
@@ -17,6 +17,8 @@ void Viewer::initializeGL() {
 }
 void Viewer::resizeGL(int w, int h) { glViewport(0, 0, w, h); }
 void Viewer::paintGL() {
+//    if (!vertex_buffer_.isCreated() || !index_buffer_.isCreated())
+//        return;
   projection_matrix_.setToIdentity();
   if (projection_type_ == 0) {
     projection_matrix_.ortho(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 6.0f);
@@ -24,45 +26,54 @@ void Viewer::paintGL() {
     projection_matrix_.frustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 6.0f);
   }
   projection_matrix_.translate(0.0, 0.0, -2.05);
-  glLineWidth((GLfloat)line_width_);
-  if (line_type_ == 1) {
-    glEnable(GL_LINE_STIPPLE);
-    glLineStipple(2, 0X00FF);
-  } else {
-    glDisable(GL_LINE_STIPPLE);
-  }
-  glEnable(GL_PROGRAM_POINT_SIZE);
+  projection_matrix_.rotate(30, 0, 1, 0);
+//  glLineWidth((GLfloat)line_width_);
+//  if (line_type_ == 1) {
+//    glEnable(GL_LINE_STIPPLE);
+//    glLineStipple(2, 0X00FF);
+//  } else {
+//    glDisable(GL_LINE_STIPPLE);
+//  }
+//  glEnable(GL_PROGRAM_POINT_SIZE);
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  initShaders();
+  InitShaders();
   program_->bind();
   glClearColor((GLfloat)background_color_[0], (GLfloat)background_color_[1],
                (GLfloat)background_color_[2], (GLfloat)background_color_[3]);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     vertex_buffer_.bind();
+    index_buffer_.bind();
+
     program_->setUniformValue("qt_ModelViewProjectionMatrix",
                               projection_matrix_);
     program_->setUniformValue("color", line_color_);
     int vertLoc = program_->attributeLocation("qt_Vertex");
     program_->enableAttributeArray(vertLoc);
     program_->setAttributeBuffer(vertLoc, GL_FLOAT, 0, 3, 0);
-    program_->setUniformValue("point_size", vertex_size_);
-//    for (int i = 0; i <= md_->s_.pos; ++i) {
-//      glDrawElements(GL_LINE_LOOP, md_->s_.polygons[i].pos + 1, GL_UNSIGNED_INT,
-//                     md_->s_.polygons[i].data);
-//    }
-    if (vertex_type_ != 0) {
-      program_->setUniformValue("color", vertex_color_);
-      if (vertex_type_ == 1)
-        glEnable(GL_POINT_SMOOTH);
-      else
-        glDisable(GL_POINT_SMOOTH);
-      /*for (int i = 0; i <= md_->s_.pos; ++i) {
-        glDrawElements(GL_POINTS, md_->s_.polygons[i].pos + 1, GL_UNSIGNED_INT,
-                       md_->s_.polygons[i].data);
-      }*/
-    }
+   // program_->setUniformValue("point_size", vertex_size_);
 
+//    for (int i = 0; i < fasets_.size(); ++i) {
+//         glDrawElements(GL_LINE_LOOP, fasets_[i].size(), GL_UNSIGNED_INT,
+//                        fasets_[i].data());
+//       }
+
+   glDrawElements(GL_LINES, index_buffer_.size(), GL_UNSIGNED_INT, 0);
+
+//    if (vertex_type_ != 0) {
+//      program_->setUniformValue("color", vertex_color_);
+//      if (vertex_type_ == 1)
+//        glEnable(GL_POINT_SMOOTH);
+//      else
+//        glDisable(GL_POINT_SMOOTH);
+//      /*for (int i = 0; i <= md_->s_.pos; ++i) {
+//        glDrawElements(GL_POINTS, md_->s_.polygons[i].pos + 1, GL_UNSIGNED_INT,
+//                       md_->s_.polygons[i].data);
+//      }*/
+//    }
+
+    vertex_buffer_.release();
+    index_buffer_.release();
   delete (program_);
 }
 
@@ -107,12 +118,36 @@ void Viewer::paintGL() {
 //  projection_type_ = settings->value("projection_type", 0).toInt();
 //}
 
-void Viewer::InitModel() {
+void Viewer::InitModel(GLuint size, GLfloat* data,  std::vector<std::vector<GLuint>> fasets) {
+
   vertex_buffer_.create();
   vertex_buffer_.bind();
-  vertex_buffer_.allocate(mw_cont_->GetVertexes(), (mw_cont_->GetVertexCount() * sizeof(GLfloat));
+  vertex_buffer_.allocate(data, size * sizeof(GLfloat));
   vertex_buffer_.release();
+  std::vector<GLuint> indexes;
+  for (int i = 0; i < fasets.size(); ++i) {
+      for (int j = 0; j < fasets[i].size(); ++j) {
+          if (j + 1 != fasets[i].size()) {
+              indexes.push_back(fasets[i][j]);
+              indexes.push_back(fasets[i][j + 1]);
+          } else {
+              indexes.push_back(fasets[i][j]);
+              indexes.push_back(fasets[i][0]);
+          }
+      }
+  }
+
+  index_buffer_.create();
+  index_buffer_.bind();
+  index_buffer_.allocate(indexes.data(), indexes.size() * sizeof(GLuint));
+  qDebug() << index_buffer_.type();
+
+  index_buffer_.release();
 }
+
+//void Viewer::DrawFasets(const std::vector<std::vector<GLuint> > &fasets) {
+
+//}
 
 //void Viewer::mousePressEvent(QMouseEvent *mo) { pos_ = mo->pos(); }
 
@@ -134,7 +169,7 @@ void Viewer::InitModel() {
 //  update();
 //}
 
-void Viewer::initShaders() {
+void Viewer::InitShaders() {
   program_ = new QOpenGLShaderProgram();
   if (!program_->addShaderFromSourceFile(QOpenGLShader::Vertex,
                                          ":/vertex_shader.vsh")) {

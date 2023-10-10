@@ -10,8 +10,8 @@ class Model
 {
 public:
     Model();
-    std::vector<GLfloat> vertexes;
-    std::vector<std::vector<GLuint>> fasets;
+    std::vector<GLfloat> vertexes_;
+    std::vector<std::vector<GLuint>> fasets_;
 };
 }
 #endif // MODEL_H
