@@ -6,12 +6,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //viewer_ = new Viewer(this);
-    //ui->tabWidget->insertTab(0, viewer_, "tab1");
-
-  //  ui->tabWidget->setContentsMargins(0,0,0,0);
     mw_cont_ = new MWController;
     connect(ui->load_btn, SIGNAL(clicked()), this, SLOT(LoadButtonClicked()));
+    connect(ui->set_btn, SIGNAL(clicked()), this, SLOT(SlotSettngsBtnClicked()));
 
 }
 
@@ -22,10 +19,21 @@ MainWindow::~MainWindow()
 
 void MainWindow::LoadButtonClicked(){
     //сначала загрузка данных в модель
-   ui->viewer->SetFasets(mw_cont_->GetFasets());
+
     ui->viewer->InitModel(mw_cont_->GetVertexCount(), mw_cont_->GetVertexes(), mw_cont_->GetFasets());
 
     ui->viewer->update();
-//    qDebug() << " sfasf";
+
 }
 
+void MainWindow::SlotSettngsBtnClicked() {
+    if (sw_)
+        delete sw_;
+  sw_ = new SettingsWidget(this);  //
+  sw_->setModal(true);
+
+  if (sw_->exec() == QDialog::Accepted) {
+    ui->viewer->LoadSettings();
+    ui->viewer->update();
+  }
+}

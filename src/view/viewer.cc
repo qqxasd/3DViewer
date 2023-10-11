@@ -4,8 +4,8 @@
 #include <QMouseEvent>
 using namespace s21;
 Viewer::Viewer(QWidget *parent) : QOpenGLWidget(parent), index_buffer_(QOpenGLBuffer::IndexBuffer) {
-//  settings = new QSettings(this);
-//  LoadSettings();
+    settings_= new QSettings(this);
+    LoadSettings();
 
 }
 
@@ -27,14 +27,14 @@ void Viewer::paintGL() {
   }
   projection_matrix_.translate(0.0, 0.0, -2.05);
   projection_matrix_.rotate(30, 0, 1, 0);
-//  glLineWidth((GLfloat)line_width_);
-//  if (line_type_ == 1) {
-//    glEnable(GL_LINE_STIPPLE);
-//    glLineStipple(2, 0X00FF);
-//  } else {
-//    glDisable(GL_LINE_STIPPLE);
-//  }
-//  glEnable(GL_PROGRAM_POINT_SIZE);
+  glLineWidth((GLfloat)line_width_);
+  if (line_type_ == 1) {
+    glEnable(GL_LINE_STIPPLE);
+    glLineStipple(2, 0X00FF);
+  } else {
+    glDisable(GL_LINE_STIPPLE);
+  }
+  glEnable(GL_PROGRAM_POINT_SIZE);
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   InitShaders();
   program_->bind();
@@ -51,26 +51,20 @@ void Viewer::paintGL() {
     int vertLoc = program_->attributeLocation("qt_Vertex");
     program_->enableAttributeArray(vertLoc);
     program_->setAttributeBuffer(vertLoc, GL_FLOAT, 0, 3, 0);
-   // program_->setUniformValue("point_size", vertex_size_);
-
-//    for (int i = 0; i < fasets_.size(); ++i) {
-//         glDrawElements(GL_LINE_LOOP, fasets_[i].size(), GL_UNSIGNED_INT,
-//                        fasets_[i].data());
-//       }
+    program_->setUniformValue("point_size", vertex_size_);
 
    glDrawElements(GL_LINES, index_buffer_.size(), GL_UNSIGNED_INT, 0);
 
-//    if (vertex_type_ != 0) {
-//      program_->setUniformValue("color", vertex_color_);
-//      if (vertex_type_ == 1)
-//        glEnable(GL_POINT_SMOOTH);
-//      else
-//        glDisable(GL_POINT_SMOOTH);
-//      /*for (int i = 0; i <= md_->s_.pos; ++i) {
-//        glDrawElements(GL_POINTS, md_->s_.polygons[i].pos + 1, GL_UNSIGNED_INT,
-//                       md_->s_.polygons[i].data);
-//      }*/
-//    }
+    if (vertex_type_ != 0) {
+      program_->setUniformValue("color", vertex_color_);
+      if (vertex_type_ == 1)
+        glEnable(GL_POINT_SMOOTH);
+      else
+        glDisable(GL_POINT_SMOOTH);
+
+        glDrawElements(GL_POINTS, index_buffer_.size(), GL_UNSIGNED_INT, 0 );
+
+    }
 
     vertex_buffer_.release();
     index_buffer_.release();
@@ -94,29 +88,29 @@ void Viewer::paintGL() {
 //  return err;
 //}
 
-//void Viewer::LoadSettings() {
-//  QColor tmp =
-//      settings->value("background_color", QColor(Qt::black)).value<QColor>();
-//  background_color_[0] = (GLfloat)tmp.red() / 255;
-//  background_color_[1] = (GLfloat)tmp.green() / 255;
-//  background_color_[2] = (GLfloat)tmp.blue() / 255;
-//  background_color_[3] = (GLfloat)tmp.alpha() / 255;
-//  tmp = settings->value("line_color", QColor(Qt::white)).value<QColor>();
-//  line_color_[0] = (GLfloat)tmp.red() / 255;
-//  line_color_[1] = (GLfloat)tmp.green() / 255;
-//  line_color_[2] = (GLfloat)tmp.blue() / 255;
-//  line_color_[3] = (GLfloat)tmp.alpha() / 255;
-//  tmp = settings->value("vertex_color", QColor(Qt::blue)).value<QColor>();
-//  vertex_color_[0] = (GLfloat)tmp.red() / 255;
-//  vertex_color_[1] = (GLfloat)tmp.green() / 255;
-//  vertex_color_[2] = (GLfloat)tmp.blue() / 255;
-//  vertex_color_[3] = (GLfloat)1.0;
-//  line_type_ = settings->value("line_type", 0).toInt();
-//  vertex_type_ = settings->value("vertex_type", 0).toInt();
-//  vertex_size_ = settings->value("vertex_size", 1.0).toFloat();
-//  line_width_ = settings->value("line_width", 1.0).toFloat();
-//  projection_type_ = settings->value("projection_type", 0).toInt();
-//}
+void Viewer::LoadSettings() {
+  QColor tmp =
+      settings_->value("background_color", QColor(Qt::black)).value<QColor>();
+  background_color_[0] = (GLfloat)tmp.red() / 255;
+  background_color_[1] = (GLfloat)tmp.green() / 255;
+  background_color_[2] = (GLfloat)tmp.blue() / 255;
+  background_color_[3] = (GLfloat)tmp.alpha() / 255;
+  tmp = settings_->value("line_color", QColor(Qt::white)).value<QColor>();
+  line_color_[0] = (GLfloat)tmp.red() / 255;
+  line_color_[1] = (GLfloat)tmp.green() / 255;
+  line_color_[2] = (GLfloat)tmp.blue() / 255;
+  line_color_[3] = (GLfloat)tmp.alpha() / 255;
+  tmp = settings_->value("vertex_color", QColor(Qt::blue)).value<QColor>();
+  vertex_color_[0] = (GLfloat)tmp.red() / 255;
+  vertex_color_[1] = (GLfloat)tmp.green() / 255;
+  vertex_color_[2] = (GLfloat)tmp.blue() / 255;
+  vertex_color_[3] = (GLfloat)1.0;
+  line_type_ = settings_->value("line_type", 0).toInt();
+  vertex_type_ = settings_->value("vertex_type", 0).toInt();
+  vertex_size_ = settings_->value("vertex_size", 1.0).toFloat();
+  line_width_ = settings_->value("line_width", 1.0).toFloat();
+  projection_type_ = settings_->value("projection_type", 0).toInt();
+}
 
 void Viewer::InitModel(GLuint size, GLfloat* data,  std::vector<std::vector<GLuint>> fasets) {
 
@@ -140,7 +134,7 @@ void Viewer::InitModel(GLuint size, GLfloat* data,  std::vector<std::vector<GLui
   index_buffer_.create();
   index_buffer_.bind();
   index_buffer_.allocate(indexes.data(), indexes.size() * sizeof(GLuint));
-  qDebug() << index_buffer_.type();
+
 
   index_buffer_.release();
 }

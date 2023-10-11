@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "controller/mwcontroller.h"
 #include "view/viewer.h"
+#include "view/settings_widget.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -15,13 +16,15 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     MWController* mw_cont_; ///< Создание экземпляра контроллера
-    Viewer* viewer_; ///< Создание экземпляра вьювера
+//    Viewer* viewer_; ///< Создание экземпляра вьювера
     ~MainWindow();
 
 private:
     Ui::MainWindow *ui;
+    SettingsWidget* sw_ = nullptr;
 
 public slots:
     void LoadButtonClicked();
+    void SlotSettngsBtnClicked();
 };
 #endif // MAINWINDOW_H

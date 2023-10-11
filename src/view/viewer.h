@@ -6,7 +6,7 @@
 #include <QOpenGLShader>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLWidget>
-
+#include <QSettings>
 
 
 // #include "../../model/model.h"
@@ -65,17 +65,17 @@ class Viewer : public QOpenGLWidget, protected QOpenGLFunctions {
   float x_rot_,
       y_rot_; */ ///< Смещение модели на координатах окна отображения модели
   //QVector4D bckgrnd_color_={70,20,20,255};;  ///< Цвет фона
-//  QSettings* settings;  ///< Экземпляр настроек отображения моделей
+    QSettings* settings_;  ///< Экземпляр настроек отображения моделей
 
-  QVector4D background_color_ ={0.2,0.4,0.4,0.5};  ///< Цвет фона
-  QVector4D line_color_ = {0.0, 0.0, 0.0, 0.5};        ///< Цвет линий
-  QVector4D vertex_color_= {0, 0, 0, 0};      ///< Цвет точек
+  QVector4D background_color_ ;  ///< Цвет фона
+  QVector4D line_color_ ;        ///< Цвет линий
+  QVector4D vertex_color_;      ///< Цвет точек
   int vertex_type_;             ///< Тип точек
   int line_type_;               ///< Тип линии
   float vertex_size_;           ///< Размер точек
   float line_width_;            ///< Ширина линий
-  int projection_type_ = 1;         ///< Тип проекции
- std::vector<std::vector<GLuint>> fasets_;
+  int projection_type_;         ///< Тип проекции
+
  public:
   /**
    *Загрузка модели по указанному пути
@@ -85,11 +85,10 @@ class Viewer : public QOpenGLWidget, protected QOpenGLFunctions {
   /**
    * Загрузка файла настроек
    */
- // void LoadSettings();
+    void LoadSettings();
 
-  void SetFasets(const std::vector<std::vector<GLuint>>& fasets) {
-      fasets_ = fasets;
-  }
+
+
 };
 }
 #endif  // VIEWER_H

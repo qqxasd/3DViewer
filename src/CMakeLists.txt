@@ -23,6 +23,7 @@ set(PROJECT_SOURCES
         model/model.h model/model.cc
         controller/mwcontroller.h controller/mwcontroller.cc
         view/shaders.qrc
+        view/settings_widget.cc view/settings_widget.h view/settings_widget.ui
 
 )
 
