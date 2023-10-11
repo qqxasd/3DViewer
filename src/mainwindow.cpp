@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "view/viewer.h"
+#include <QValidator>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -9,6 +10,17 @@ MainWindow::MainWindow(QWidget *parent)
     mw_cont_ = new MWController;
     connect(ui->load_btn, SIGNAL(clicked()), this, SLOT(LoadButtonClicked()));
     connect(ui->set_btn, SIGNAL(clicked()), this, SLOT(SlotSettngsBtnClicked()));
+    QDoubleValidator* doub_vall = new QDoubleValidator(-360.0, 360.0, 2, this);
+    doub_vall->setLocale(QLocale::C);
+    ui->rot_x_le->setValidator(doub_vall);
+    ui->rot_y_le->setValidator(doub_vall);
+    ui->rot_z_le->setValidator(doub_vall);
+    ui->move_x_le->setValidator(doub_vall);
+    ui->move_y_le->setValidator(doub_vall);
+    ui->move_z_le->setValidator(doub_vall);
+    QDoubleValidator* sc_vall = new QDoubleValidator(0.01, 10.0, 2, this);
+    sc_vall->setLocale(QLocale::C);
+    ui->scale_le->setValidator(sc_vall);
 
 }
 

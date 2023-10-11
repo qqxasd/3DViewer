@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include "controller/mwcontroller.h"
-#include "view/viewer.h"
+
 #include "view/settings_widget.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,7 +16,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     MWController* mw_cont_; ///< Создание экземпляра контроллера
-//    Viewer* viewer_; ///< Создание экземпляра вьювера
     ~MainWindow();
 
 private:

@@ -39,10 +39,17 @@ class Viewer : public QOpenGLWidget, protected QOpenGLFunctions {
    */
   void InitShaders();
   /**
-   * Выделение памяти под модель
+   * Иницифализация модели
    */
   void InitModel(GLuint size, GLfloat* data,  std::vector<std::vector<GLuint>> fasets);
-
+  /**
+   * Иницифализация, выделение памяти и заполнение массива вершин
+   */
+  void InitVertexBuffer(GLuint size, GLfloat* data);
+  /**
+   * Иницифализация, выделение памяти и заполнение массива индексов
+   */
+  void InitIndexBuffer(std::vector<std::vector<GLuint>> fasets);
   /**
    * Обработка нажатия пкм
    */

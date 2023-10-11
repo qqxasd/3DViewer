@@ -17,8 +17,6 @@ void Viewer::initializeGL() {
 }
 void Viewer::resizeGL(int w, int h) { glViewport(0, 0, w, h); }
 void Viewer::paintGL() {
-//    if (!vertex_buffer_.isCreated() || !index_buffer_.isCreated())
-//        return;
   projection_matrix_.setToIdentity();
   if (projection_type_ == 0) {
     projection_matrix_.ortho(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 6.0f);
@@ -113,30 +111,36 @@ void Viewer::LoadSettings() {
 }
 
 void Viewer::InitModel(GLuint size, GLfloat* data,  std::vector<std::vector<GLuint>> fasets) {
+    InitVertexBuffer(size, data);
+    InitIndexBuffer(fasets);
+}
 
-  vertex_buffer_.create();
-  vertex_buffer_.bind();
-  vertex_buffer_.allocate(data, size * sizeof(GLfloat));
-  vertex_buffer_.release();
-  std::vector<GLuint> indexes;
-  for (int i = 0; i < fasets.size(); ++i) {
-      for (int j = 0; j < fasets[i].size(); ++j) {
-          if (j + 1 != fasets[i].size()) {
-              indexes.push_back(fasets[i][j]);
-              indexes.push_back(fasets[i][j + 1]);
-          } else {
-              indexes.push_back(fasets[i][j]);
-              indexes.push_back(fasets[i][0]);
-          }
-      }
-  }
+void Viewer::InitVertexBuffer(GLuint size, GLfloat *data) {
+    vertex_buffer_.create();
+    vertex_buffer_.bind();
+    vertex_buffer_.allocate(data, size * sizeof(GLfloat));
+    vertex_buffer_.release();
+}
 
-  index_buffer_.create();
-  index_buffer_.bind();
-  index_buffer_.allocate(indexes.data(), indexes.size() * sizeof(GLuint));
+void Viewer::InitIndexBuffer(std::vector<std::vector<GLuint> > fasets){
+    std::vector<GLuint> indexes;
 
+    for (int i = 0; i < fasets.size(); ++i) {
+            for (int j = 0; j < fasets[i].size(); ++j) {
+                if (j + 1 != fasets[i].size()) {
+                    indexes.push_back(fasets[i][j]);
+                    indexes.push_back(fasets[i][j + 1]);
+                } else {
+                    indexes.push_back(fasets[i][j]);
+                    indexes.push_back(fasets[i][0]);
+                }
+            }
+        }
 
-  index_buffer_.release();
+        index_buffer_.create();
+        index_buffer_.bind();
+        index_buffer_.allocate(indexes.data(), indexes.size() * sizeof(GLuint));
+        index_buffer_.release();
 }
 
 //void Viewer::DrawFasets(const std::vector<std::vector<GLuint> > &fasets) {
