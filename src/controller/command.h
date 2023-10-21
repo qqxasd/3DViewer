@@ -6,6 +6,7 @@
 #include <string>
 
 #include "../model/model.h"
+#include "afine_strategy.h"
 
 namespace s21 {
 class Command {
@@ -25,12 +26,6 @@ class RotateCommand : public Command {
   void Execute() override;
 
  private:
-  void flip_rel_x_(std::vector<GLfloat>& cords, int dots_amount,
-                   double flip_angle);
-  void flip_rel_y_(std::vector<GLfloat>& cords, int dots_amount,
-                   double flip_angle);
-  void flip_rel_z_(std::vector<GLfloat>& cords, int dots_amount,
-                   double flip_angle);
   char axis_;
   double angle_;
 };

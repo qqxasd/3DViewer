@@ -2,64 +2,32 @@
 
 namespace s21 {
 
-void RotateCommand::flip_rel_z_(std::vector<GLfloat> &cords, int dots_amount,
-                                double flip_angle) {
-  for (int i = 0; i < dots_amount; i += 3) {
-    double rem_cur = cords[i];
-    cords[i] = rem_cur * cos(flip_angle) - cords[i + 1] * sin(flip_angle);
-    cords[i + 1] = rem_cur * sin(flip_angle) + cords[i + 1] * cos(flip_angle);
-  }
-}
-
-void RotateCommand::flip_rel_x_(std::vector<GLfloat> &cords, int dots_amount,
-                                double flip_angle) {
-  for (int i = 0; i < dots_amount; i += 3) {
-    double rem_cur = cords[i + 1];
-    cords[i + 1] = rem_cur * cos(flip_angle) - cords[i + 2] * sin(flip_angle);
-    cords[i + 2] = rem_cur * sin(flip_angle) + cords[i + 2] * cos(flip_angle);
-  }
-}
-
-void RotateCommand::flip_rel_y_(std::vector<GLfloat> &cords, int dots_amount,
-                                double flip_angle) {
-  for (int i = 0; i < dots_amount; i += 3) {
-    double rem_cur = cords[i];
-    cords[i] = rem_cur * cos(flip_angle) - cords[i + 2] * sin(flip_angle);
-    cords[i + 2] = rem_cur * sin(flip_angle) + cords[i + 2] * cos(flip_angle);
-  }
-}
-
 void RotateCommand::Execute() {
   if (axis_ == 'x') {
-    flip_rel_x_(GetModel()->vertexes_, GetModel()->vertexes_.size(), angle_);
+    RotateStrategyX strategy(GetModel()->vertexes_, angle_);
+    strategy.use();
   } else if (axis_ == 'y') {
-    flip_rel_y_(GetModel()->vertexes_, GetModel()->vertexes_.size(), angle_);
+    RotateStrategyY strategy(GetModel()->vertexes_, angle_);
+    strategy.use();
   } else {
-    flip_rel_z_(GetModel()->vertexes_, GetModel()->vertexes_.size(), angle_);
+    RotateStrategyZ strategy(GetModel()->vertexes_, angle_);
+    strategy.use();
   }
 }
 
 void MoveCommand::Execute() {
-  int i;
-  if (axis_ == 'x') {
-    i = 0;
-  } else if (axis_ == 'y') {
-    i = 1;
-  } else {
-    i = 2;
-  }
-  for (; i < GetModel()->vertexes_.size() - 1; i += 3) {
-    GetModel()->vertexes_[i] += dist_;
-  }
+  MoveStrategy strategy(GetModel()->vertexes_, dist_, axis_);
+  strategy.use();
 }
 
 void ScaleCommand::Execute() {
-  for (int i = 0; i < GetModel()->vertexes_.size() - 1; i++) {
-    GetModel()->vertexes_[i] *= value_;
-  }
+  ScaleStrategy strategy(GetModel()->vertexes_, value_);
+  strategy.use();
 }
 
 void ParseCommand::Execute() {
+  GetModel()->vertexes_.clear();
+  GetModel()->fasets_.clear();
   std::vector<GLfloat> &vertexes = GetModel()->vertexes_;
   std::vector<std::vector<GLuint>> &fasets = GetModel()->fasets_;
   std::ifstream file(path_);
