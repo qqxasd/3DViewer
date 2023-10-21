@@ -1,5 +1,5 @@
 #include "afine_strategy.h"
-
+using namespace s21;
 void RotateStrategyX::use() {
   for (int i = 0; i < dots_.size(); i += 3) {
     double rem_cur = dots_[i + 1];

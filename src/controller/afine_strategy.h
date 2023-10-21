@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "OpenGL/OpenGL.h"
-
+namespace s21 {
 class AfineStrategy {
  public:
   AfineStrategy(std::vector<GLfloat> &vec) : dots_(vec) {}
@@ -71,5 +71,5 @@ class ScaleStrategy : public AfineStrategy {
  private:
   double scale_;
 };
-
+}
 #endif

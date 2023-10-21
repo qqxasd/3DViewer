@@ -2,6 +2,7 @@
 #include "./ui_mainwindow.h"
 #include "view/viewer.h"
 #include <QValidator>
+#include <QFileDialog>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -10,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     mw_cont_ = new MWController;
     connect(ui->load_btn, SIGNAL(clicked()), this, SLOT(LoadButtonClicked()));
     connect(ui->set_btn, SIGNAL(clicked()), this, SLOT(SlotSettngsBtnClicked()));
+    connect(ui->record_btn, SIGNAL(clicked()), this, SLOT(SlotRecordButtonClicked()));
     QDoubleValidator* doub_vall = new QDoubleValidator(-360.0, 360.0, 2, this);
     doub_vall->setLocale(QLocale::C);
     ui->rot_x_le->setValidator(doub_vall);
@@ -27,6 +29,24 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::SaveJPEG() {
+    QString path = QFileDialog::getSaveFileName(this, tr("Save File"),
+                                                 "~/untitled.jpg",
+                                                 tr("Images (*.jpg)"));
+    QImage img = ui->viewer->grabFramebuffer();
+    img.save(path);
+
+}
+
+void MainWindow::SaveBMP() {
+    QString path = QFileDialog::getSaveFileName(this, tr("Save File"),
+                                                 "~/untitled.bmp",
+                                                 tr("Images (*.bmp)"));
+    QImage img = ui->viewer->grabFramebuffer();
+    img.save(path);
+
 }
 
 void MainWindow::LoadButtonClicked(){
@@ -48,4 +68,11 @@ void MainWindow::SlotSettngsBtnClicked() {
     ui->viewer->LoadSettings();
     ui->viewer->update();
   }
+}
+
+void MainWindow::SlotRecordButtonClicked() {
+    if (ui->comboBox->currentIndex() == 0)
+        SaveJPEG();
+    else if (ui->comboBox->currentIndex() == 1)
+        SaveBMP();
 }

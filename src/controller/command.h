@@ -12,7 +12,7 @@ namespace s21 {
 class Command {
  public:
   Command(Model* m) : model_(m){};
-  virtual void Execute();
+  virtual void Execute() = 0;
   Model* GetModel() { return model_; }
 
  private:
