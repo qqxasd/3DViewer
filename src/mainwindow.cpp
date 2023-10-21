@@ -3,6 +3,7 @@
 #include "view/viewer.h"
 #include <QValidator>
 #include <QFileDialog>
+#include "controller/command.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -50,7 +51,12 @@ void MainWindow::SaveBMP() {
 }
 
 void MainWindow::LoadButtonClicked(){
-    //сначала загрузка данных в модель
+   QString path = QFileDialog::getOpenFileName(this, tr("Open File"),
+                                               "~/", tr("Models (*.obj)"));
+
+
+    ParseCommand pc(mw_cont_->model_, path.toStdString());
+    pc.Execute();
 
     ui->viewer->InitModel(mw_cont_->GetVertexCount(), mw_cont_->GetVertexes(), mw_cont_->GetFasets());
 

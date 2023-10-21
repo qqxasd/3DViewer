@@ -1,5 +1,5 @@
 #include "command.h"
-
+#include <iostream>
 namespace s21 {
 
 void RotateCommand::Execute() {
@@ -32,10 +32,11 @@ void ParseCommand::Execute() {
   std::vector<std::vector<GLuint>> &fasets = GetModel()->fasets_;
   std::ifstream file(path_);
   std::string str;
+    double max = 1.0;
   if (file.is_open()) {
     while (std::getline(file, str)) {
       int str_p = 2;
-      if (str[0] == 'f') {
+      if (str[0] == 'v') {
         double x = std::stod(str.substr(str_p));
         while (str[str_p] != ' ') str_p++;
         str_p++;
@@ -46,7 +47,13 @@ void ParseCommand::Execute() {
         vertexes.push_back(x);
         vertexes.push_back(y);
         vertexes.push_back(z);
-      } else if (str[0] == 'v') {
+        if (fabs(x) > max)
+            max = fabs(x);
+        if (fabs(y) > max)
+            max = fabs(y);
+        if (fabs(z) > max)
+            max = fabs(z);
+      } else if (str[0] == 'f') {
         std::vector<GLuint> faset;
         while (str_p < str.size()) {
           GLuint dot_id = std::stoi(str.substr(str_p));
@@ -57,6 +64,10 @@ void ParseCommand::Execute() {
         fasets.push_back(faset);
       }
     }
+    for (auto& v : vertexes)
+        v = v / max;
+    for (auto& v : vertexes)
+        std::cout << v << ' ';
   } else {
     throw std::logic_error("file " + path_ + " doesn't exist");
   }
