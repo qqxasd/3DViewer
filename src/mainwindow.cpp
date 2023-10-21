@@ -54,13 +54,14 @@ void MainWindow::LoadButtonClicked(){
    QString path = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                "~/", tr("Models (*.obj)"));
 
-
+    if (!path.isEmpty()) {
     ParseCommand pc(mw_cont_->model_, path.toStdString());
     pc.Execute();
 
     ui->viewer->InitModel(mw_cont_->GetVertexCount(), mw_cont_->GetVertexes(), mw_cont_->GetFasets());
 
     ui->viewer->update();
+    }
 
 }
 

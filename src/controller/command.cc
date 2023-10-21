@@ -34,6 +34,9 @@ void ParseCommand::Execute() {
   std::string str;
     double max = 1.0;
   if (file.is_open()) {
+      vertexes.push_back(0);
+      vertexes.push_back(0);
+      vertexes.push_back(0);
     while (std::getline(file, str)) {
       int str_p = 2;
       if (str[0] == 'v') {
