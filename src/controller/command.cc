@@ -69,8 +69,6 @@ void ParseCommand::Execute() {
     }
     for (auto& v : vertexes)
         v = v / max;
-    for (auto& v : vertexes)
-        std::cout << v << ' ';
   } else {
     throw std::logic_error("file " + path_ + " doesn't exist");
   }

@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->load_btn, SIGNAL(clicked()), this, SLOT(LoadButtonClicked()));
     connect(ui->set_btn, SIGNAL(clicked()), this, SLOT(SlotSettngsBtnClicked()));
     connect(ui->record_btn, SIGNAL(clicked()), this, SLOT(SlotRecordButtonClicked()));
+    connect(ui->transform_btn, SIGNAL(clicked()), this, SLOT(SlotTransformButtonClicked()));
     QDoubleValidator* doub_vall = new QDoubleValidator(-360.0, 360.0, 2, this);
     doub_vall->setLocale(QLocale::C);
     ui->rot_x_le->setValidator(doub_vall);
@@ -82,4 +83,48 @@ void MainWindow::SlotRecordButtonClicked() {
         SaveJPEG();
     else if (ui->comboBox->currentIndex() == 1)
         SaveBMP();
+}
+
+void MainWindow::SlotTransformButtonClicked() {
+    if (mw_cont_->model_) {
+    if (!ui->move_x_le->text().isEmpty()) {
+        double move = ui->move_x_le->text().toDouble();
+        MoveCommand mc(mw_cont_->model_, 'x', move);
+        mc.Execute();
+    }
+    if (!ui->move_y_le->text().isEmpty()) {
+        double move = ui->move_y_le->text().toDouble();
+        MoveCommand mc(mw_cont_->model_, 'y', move);
+        mc.Execute();
+    }
+    if (!ui->move_z_le->text().isEmpty()) {
+        double move = ui->move_z_le->text().toDouble();
+        MoveCommand mc(mw_cont_->model_, 'z', move);
+        mc.Execute();
+    }
+    if (!ui->rot_x_le->text().isEmpty()) {
+        double rot = ui->rot_x_le->text().toDouble();
+        RotateCommand rc (mw_cont_->model_, 'x', rot);
+        rc.Execute();
+    }
+    if (!ui->rot_y_le->text().isEmpty()) {
+        double rot = ui->rot_y_le->text().toDouble();
+        RotateCommand rc (mw_cont_->model_, 'y', rot);
+        rc.Execute();
+    }
+    if (!ui->rot_z_le->text().isEmpty()) {
+        double rot = ui->rot_z_le->text().toDouble();
+        RotateCommand rc (mw_cont_->model_, 'z', rot);
+        rc.Execute();
+    }
+    if (!ui->scale_le->text().isEmpty()) {
+        double scale = ui->scale_le->text().toDouble();
+        if (scale == 0)
+            scale = 1e-7;
+        ScaleCommand sc (mw_cont_->model_, scale);
+        sc.Execute();
+    }
+    ui->viewer->InitVertexBuffer(mw_cont_->GetVertexCount(), mw_cont_->GetVertexes());
+     ui->viewer->update();
+    }
 }
