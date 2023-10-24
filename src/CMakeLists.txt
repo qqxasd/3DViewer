@@ -14,6 +14,8 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets OpenGL OpenGLWidgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets OpenGL)
 find_package(Qt6 COMPONENTS Widgets OpenGL OpenGLWidgets REQUIRED)
 
+add_subdirectory(ExtLibs/QtGifImage/src/gifimage)
+
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
@@ -25,6 +27,8 @@ set(PROJECT_SOURCES
         view/shaders.qrc
         view/settings_widget.cc view/settings_widget.h view/settings_widget.ui
         controller/command.h controller/command.cc controller/afine_stategy.cc controller/afine_strategy.h
+       # ExtLibs/QtGifImage/src/3rdParty/giflib/gif_lib.h
+        #ExtLibs/QtGifImage/src/gifimage/qgifglobal.h ExtLibs/QtGifImage/src/gifimage/qgifimage_p.h ExtLibs/QtGifImage/src/gifimage/qgifimage.cpp ExtLibs/QtGifImage/src/gifimage/qgifimage.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -50,7 +54,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(3dViewer_2 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt6::OpenGL Qt6::OpenGLWidgets)
+target_link_libraries(3dViewer_2 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt6::OpenGL Qt6::OpenGLWidgets gif_lib gifimage )
 
 set_target_properties(3dViewer_2 PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
@@ -67,3 +71,4 @@ install(TARGETS 3dViewer_2
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(3dViewer_2)
 endif()
+

@@ -57,5 +57,11 @@ git:
 	git add Makefile
 	git add CMakeLists.txt
 	git add view/*.vsh view/*.fsh
+	git add ExtLibs/QtGifImage/src/3rdParty/giflib/CMakeLists.txt
+	git add ExtLibs/QtGifImage/src/3rdParty/giflib/*.c
+	git add ExtLibs/QtGifImage/src/3rdParty/giflib/*.h
+	git add ExtLibs/QtGifImage/src/gifimage/CMakeLists.txt
+	git add ExtLibs/QtGifImage/src/gifimage/*.cpp
+	git add ExtLibs/QtGifImage/src/gifimage/*.h
 	
 	

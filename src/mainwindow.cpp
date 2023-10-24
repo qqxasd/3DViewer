@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->set_btn, SIGNAL(clicked()), this, SLOT(SlotSettngsBtnClicked()));
     connect(ui->record_btn, SIGNAL(clicked()), this, SLOT(SlotRecordButtonClicked()));
     connect(ui->transform_btn, SIGNAL(clicked()), this, SLOT(SlotTransformButtonClicked()));
+    connect(&tmr_, SIGNAL(timeout()), this, SLOT(SlotAddImgToGif()));
     QDoubleValidator* doub_vall = new QDoubleValidator(-360.0, 360.0, 2, this);
     doub_vall->setLocale(QLocale::C);
     ui->rot_x_le->setValidator(doub_vall);
@@ -83,6 +84,31 @@ void MainWindow::SlotRecordButtonClicked() {
         SaveJPEG();
     else if (ui->comboBox->currentIndex() == 1)
         SaveBMP();
+    else if (ui->comboBox->currentIndex() == 2) {
+        tmr_.start(100);
+        ui->record_btn->setEnabled(false);
+    }
+}
+
+void MainWindow::SlotAddImgToGif() {
+  if (gif_ == NULL) {
+    gif_ = new QGifImage(QSize(640, 480));
+    gif_->setDefaultTransparentColor(Qt::black);
+    gif_->setDefaultDelay(100);
+  }
+  QImage img = ui->viewer->grabFramebuffer();
+  gif_->addFrame(img);
+  if (gif_->frameCount() == 50) {
+    QString file_name = QFileDialog::getSaveFileName(this, tr("save"), "~/",
+                                                     tr("Images (*.gif)"));
+    gif_->save(file_name);
+    // GifFreeSavedImages(gif);
+    //        GifFreeSavedImages(gif);
+    delete gif_;
+    gif_ = NULL;
+    tmr_.stop();
+    ui->record_btn->setEnabled(true);
+  }
 }
 
 void MainWindow::SlotTransformButtonClicked() {
