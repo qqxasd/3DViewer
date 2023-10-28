@@ -1,0 +1,4 @@
+/Users/a1234/Desktop/mygit/3dViewer_2/ExtLibs/QtGifImage/src/3rdParty/giflib/build/CMakeFiles/gif.dir
+/Users/a1234/Desktop/mygit/3dViewer_2/ExtLibs/QtGifImage/src/3rdParty/giflib/build/CMakeFiles/edit_cache.dir
+/Users/a1234/Desktop/mygit/3dViewer_2/ExtLibs/QtGifImage/src/3rdParty/giflib/build/CMakeFiles/rebuild_cache.dir
+/Users/a1234/Desktop/mygit/3dViewer_2/ExtLibs/QtGifImage/src/3rdParty/giflib/build/CMakeFiles/gif_autogen.dir
