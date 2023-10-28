@@ -7,7 +7,7 @@
 
 #include "../model/model.h"
 #include "afine_strategy.h"
-
+#include "mwcontroller.h"
 namespace s21 {
 class Command {
  public:

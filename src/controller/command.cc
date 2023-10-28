@@ -39,7 +39,7 @@ void ParseCommand::Execute() {
       vertexes.push_back(0);
     while (std::getline(file, str)) {
       int str_p = 2;
-      if (str[0] == 'v') {
+      if (str[0] == 'v' && str[1] == ' ') {
         double x = std::stod(str.substr(str_p));
         while (str[str_p] != ' ') str_p++;
         str_p++;
@@ -57,21 +57,20 @@ void ParseCommand::Execute() {
         if (fabs(z) > max)
             max = fabs(z);
       } else if (str[0] == 'f') {
-        std::vector<GLuint> faset;
+        std::vector<GLuint> faset;  
         while (str_p < str.size()) {
           GLuint dot_id = std::stoi(str.substr(str_p));
           faset.push_back(dot_id);
           while (str_p < str.size() && str[str_p] != ' ') str_p++;
-          str_p++;
+          while (str_p < str.size() && !(str[str_p] >= '0' && str[str_p] <= '9')) str_p++;
         }
         fasets.push_back(faset);
       }
     }
     for (auto& v : vertexes)
         v = v / max;
-  } else {
-    throw std::logic_error("file " + path_ + " doesn't exist");
   }
 }
+}
 
-}  // namespace s21
+  // namespace s21
