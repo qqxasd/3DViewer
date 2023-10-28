@@ -40,6 +40,7 @@ void ParseCommand::Execute() {
     while (std::getline(file, str)) {
       int str_p = 2;
       if (str[0] == 'v' && str[1] == ' ') {
+        str_p++;
         double x = std::stod(str.substr(str_p));
         while (str[str_p] != ' ') str_p++;
         str_p++;
@@ -67,10 +68,19 @@ void ParseCommand::Execute() {
         fasets.push_back(faset);
       }
     }
-    for (auto& v : vertexes)
-        v = v / max;
+    for (auto &v : vertexes) {
+      v /= max;
+    }
   }
 }
 }
+
+// int main() {
+//   s21::Model *m = new s21::Model;
+//   s21::ParseCommand pc(m, "../../Dog.obj");
+//   pc.Execute();
+//   std::cout << m->fasets_.size() << ' ' << m->vertexes_.size() / 3;
+//   return 0;
+// }
 
   // namespace s21
