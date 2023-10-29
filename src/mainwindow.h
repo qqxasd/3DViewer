@@ -1,11 +1,12 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef CPP4_3DVIEWER_V2_0_1_MAINWINDOW_H_
+#define CPP4_3DVIEWER_V2_0_1_MAINWINDOW_H_
 
 #include <QMainWindow>
 #include "controller/mwcontroller.h"
 #include <QTimer>
 #include "view/settings_widget.h"
 #include "qgifimage.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -35,4 +36,4 @@ private slots:
     void SlotTransformButtonClicked();
     void SlotAddImgToGif();
 };
-#endif // MAINWINDOW_H
+#endif // CPP4_3DVIEWER_V2_0_1_MAINWINDOW_H_

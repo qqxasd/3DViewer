@@ -1,5 +1,5 @@
-#ifndef VIEWER_H
-#define VIEWER_H
+#ifndef CPP4_3DVIEWER_V2_0_1_VIEW_VIEWER_H_
+#define CPP4_3DVIEWER_V2_0_1_VIEW_VIEWER_H_
 #include <QMatrix4x4>
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions>
@@ -98,4 +98,4 @@ class Viewer : public QOpenGLWidget, protected QOpenGLFunctions {
 
 };
 }
-#endif  // VIEWER_H
+#endif  // CPP4_3DVIEWER_V2_0_1_VIEW_VIEWER_H_

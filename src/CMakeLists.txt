@@ -22,11 +22,11 @@ set(PROJECT_SOURCES
         mainwindow.h
         mainwindow.ui
         view/viewer.cc view/viewer.h
-        model/model.h model/model.cc
         controller/mwcontroller.h controller/mwcontroller.cc
         view/shaders.qrc
         view/settings_widget.cc view/settings_widget.h view/settings_widget.ui
-        controller/command.h controller/command.cc controller/afine_stategy.cc controller/afine_strategy.h
+        model/afine_stategy.cc model/afine_strategy.h
+        model/model.h model/model.cc model/command.h model/command.cc
        # ExtLibs/QtGifImage/src/3rdParty/giflib/gif_lib.h
         #ExtLibs/QtGifImage/src/gifimage/qgifglobal.h ExtLibs/QtGifImage/src/gifimage/qgifimage_p.h ExtLibs/QtGifImage/src/gifimage/qgifimage.cpp ExtLibs/QtGifImage/src/gifimage/qgifimage.h
 )

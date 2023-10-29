@@ -1,5 +1,5 @@
-#ifndef SETTINGS_WIDGET_H
-#define SETTINGS_WIDGET_H
+#ifndef CPP4_3DVIEWER_V2_0_1_VIEW_SETTINGS_WIDGET_H_
+#define CPP4_3DVIEWER_V2_0_1_VIEW_SETTINGS_WIDGET_H_
 
 #include <QDialog>
 #include <QSettings>
@@ -70,4 +70,4 @@ class SettingsWidget : public QDialog {
   //     void WidgetClosed();
 };
 
-#endif  // SETTINGS_WIDGET_H
+#endif  // CPP4_3DVIEWER_V2_0_1_VIEW_SETTINGS_WIDGET_H_

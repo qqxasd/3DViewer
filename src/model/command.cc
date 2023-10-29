@@ -1,35 +1,35 @@
 #include "command.h"
-#include <iostream>
+
 namespace s21 {
 
 void RotateCommand::Execute() {
   if (axis_ == 'x') {
-    RotateStrategyX strategy(GetModel()->vertexes_, angle_);
+    RotateStrategyX strategy(*vertexes_, angle_);
     strategy.use();
   } else if (axis_ == 'y') {
-    RotateStrategyY strategy(GetModel()->vertexes_, angle_);
+    RotateStrategyY strategy(*vertexes_, angle_);
     strategy.use();
   } else {
-    RotateStrategyZ strategy(GetModel()->vertexes_, angle_);
+    RotateStrategyZ strategy(*vertexes_, angle_);
     strategy.use();
   }
 }
 
 void MoveCommand::Execute() {
-  MoveStrategy strategy(GetModel()->vertexes_, dist_, axis_);
+  MoveStrategy strategy(*vertexes_, dist_, axis_);
   strategy.use();
 }
 
 void ScaleCommand::Execute() {
-  ScaleStrategy strategy(GetModel()->vertexes_, value_);
+  ScaleStrategy strategy(*vertexes_, value_);
   strategy.use();
 }
 
 void ParseCommand::Execute() {
-  GetModel()->vertexes_.clear();
-  GetModel()->fasets_.clear();
-  std::vector<GLfloat> &vertexes = GetModel()->vertexes_;
-  std::vector<std::vector<GLuint>> &fasets = GetModel()->fasets_;
+  std::vector<GLfloat> &vertexes = *vertexes_;
+  std::vector<std::vector<GLuint>> &fasets = *fasets_;
+  vertexes.clear();
+  fasets.clear();
   std::ifstream file(path_);
   std::string str;
     double max = 1.0;
@@ -73,14 +73,4 @@ void ParseCommand::Execute() {
     }
   }
 }
-}
-
-// int main() {
-//   s21::Model *m = new s21::Model;
-//   s21::ParseCommand pc(m, "../../Dog.obj");
-//   pc.Execute();
-//   std::cout << m->fasets_.size() << ' ' << m->vertexes_.size() / 3;
-//   return 0;
-// }
-
-  // namespace s21
+} // namespace s21

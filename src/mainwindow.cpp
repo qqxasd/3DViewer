@@ -3,7 +3,8 @@
 #include "view/viewer.h"
 #include <QValidator>
 #include <QFileDialog>
-#include "controller/command.h"
+#include "model/command.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -57,14 +58,12 @@ void MainWindow::LoadButtonClicked(){
                                                "~/", tr("Models (*.obj)"));
 
     if (!path.isEmpty()) {
-    ParseCommand pc(mw_cont_->model_, path.toStdString());
-    pc.Execute();
+    mw_cont_->PerformParse(path.toStdString());
 
     ui->viewer->InitModel(mw_cont_->GetVertexCount(), mw_cont_->GetVertexes(), mw_cont_->GetFasets());
 
     ui->viewer->update();
     }
-
 }
 
 void MainWindow::SlotSettngsBtnClicked() {
@@ -112,43 +111,36 @@ void MainWindow::SlotAddImgToGif() {
 }
 
 void MainWindow::SlotTransformButtonClicked() {
-    if (mw_cont_->model_) {
+    if (mw_cont_->ContainsModel()) {
     if (!ui->move_x_le->text().isEmpty()) {
         double move = ui->move_x_le->text().toDouble();
-        MoveCommand mc(mw_cont_->model_, 'x', move);
-        mc.Execute();
+        mw_cont_->PerformMove('x', move);
     }
     if (!ui->move_y_le->text().isEmpty()) {
         double move = ui->move_y_le->text().toDouble();
-        MoveCommand mc(mw_cont_->model_, 'y', move);
-        mc.Execute();
+        mw_cont_->PerformMove('y', move);
     }
     if (!ui->move_z_le->text().isEmpty()) {
         double move = ui->move_z_le->text().toDouble();
-        MoveCommand mc(mw_cont_->model_, 'z', move);
-        mc.Execute();
+        mw_cont_->PerformMove('z', move);
     }
     if (!ui->rot_x_le->text().isEmpty()) {
         double rot = ui->rot_x_le->text().toDouble();
-        RotateCommand rc (mw_cont_->model_, 'x', rot);
-        rc.Execute();
+        mw_cont_->PerformRotate('x', rot);
     }
     if (!ui->rot_y_le->text().isEmpty()) {
         double rot = ui->rot_y_le->text().toDouble();
-        RotateCommand rc (mw_cont_->model_, 'y', rot);
-        rc.Execute();
+        mw_cont_->PerformRotate('y', rot);
     }
     if (!ui->rot_z_le->text().isEmpty()) {
         double rot = ui->rot_z_le->text().toDouble();
-        RotateCommand rc (mw_cont_->model_, 'z', rot);
-        rc.Execute();
+        mw_cont_->PerformRotate('z', rot);
     }
     if (!ui->scale_le->text().isEmpty()) {
         double scale = ui->scale_le->text().toDouble();
         if (scale == 0)
             scale = 1e-7;
-        ScaleCommand sc (mw_cont_->model_, scale);
-        sc.Execute();
+        mw_cont_->PerformScale(scale);
     }
     ui->viewer->InitVertexBuffer(mw_cont_->GetVertexCount(), mw_cont_->GetVertexes());
      ui->viewer->update();
