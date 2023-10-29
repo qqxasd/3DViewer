@@ -34,9 +34,6 @@ void ParseCommand::Execute() {
   std::string str;
     double max = 1.0;
   if (file.is_open()) {
-      vertexes.push_back(0);
-      vertexes.push_back(0);
-      vertexes.push_back(0);
     while (std::getline(file, str)) {
       int str_p = 2;
       if (str[0] == 'v' && str[1] == ' ') {
@@ -61,7 +58,7 @@ void ParseCommand::Execute() {
         std::vector<GLuint> faset;  
         while (str_p < str.size()) {
           GLuint dot_id = std::stoi(str.substr(str_p));
-          faset.push_back(dot_id);
+          faset.push_back(dot_id - 1);
           while (str_p < str.size() && str[str_p] != ' ') str_p++;
           while (str_p < str.size() && !(str[str_p] >= '0' && str[str_p] <= '9')) str_p++;
         }
