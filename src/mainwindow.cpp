@@ -67,7 +67,7 @@ void MainWindow::LoadButtonClicked(){
 
     ui->viewer->InitModel(mw_cont_->GetVertexCount(), mw_cont_->GetVertexes(), mw_cont_->GetFasets());
     ui->viewer->update();
-    QString mes = GetFileName(path) + ", v = " + QString::number(mw_cont_->GetVertexCount()) +
+    QString mes = GetFileName(path) + ", v = " + QString::number(mw_cont_->GetVertexCount() / 3) +
             ", f = " +  QString::number(mw_cont_->GetFasetsCount());
     statusBar()->showMessage(mes);
     }
