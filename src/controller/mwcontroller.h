@@ -1,7 +1,8 @@
 #ifndef CPP4_3DVIEWER_V2_0_1_CONTROLLER_MWCONTROLLER_H_
 #define CPP4_3DVIEWER_V2_0_1_CONTROLLER_MWCONTROLLER_H_
-#include "../model/model.h"
 #include <cstring>
+
+#include "../model/model.h"
 
 namespace s21 {
 
@@ -12,9 +13,7 @@ class MWController {
   GLfloat *GetVertexes();
   GLuint GetVertexCount();
   GLuint GetFasetsCount();
-  bool ContainsModel() {
-    return model_ != nullptr;
-  }
+  bool ContainsModel() { return model_ != nullptr; }
   void PerformRotate(char axis, double angle) {
     RotateCommand rc(model_->GetVertexes(), axis, angle);
     model_->ExecuteCommand(rc);
@@ -32,9 +31,8 @@ class MWController {
     model_->ExecuteCommand(pc);
   }
 
-
  private:
   Model *model_;
 };
 }  // namespace s21
-#endif  //CPP4_3DVIEWER_V2_0_1_CONTROLLER_MWCONTROLLER_H
+#endif  // CPP4_3DVIEWER_V2_0_1_CONTROLLER_MWCONTROLLER_H

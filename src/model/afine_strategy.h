@@ -71,5 +71,5 @@ class ScaleStrategy : public AfineStrategy {
  private:
   double scale_;
 };
-}
+}  // namespace s21
 #endif
