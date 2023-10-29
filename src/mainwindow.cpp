@@ -4,7 +4,7 @@
 #include <QValidator>
 #include <QFileDialog>
 #include "model/command.h"
-
+#include <QElapsedTimer>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -63,12 +63,14 @@ void MainWindow::LoadButtonClicked(){
                                                "~/", tr("Models (*.obj)"));
 
     if (!path.isEmpty()) {
+        QElapsedTimer timer;
+        timer.start();
     mw_cont_->PerformParse(path.toStdString());
 
     ui->viewer->InitModel(mw_cont_->GetVertexCount(), mw_cont_->GetVertexes(), mw_cont_->GetFasets());
     ui->viewer->update();
     QString mes = GetFileName(path) + ", v = " + QString::number(mw_cont_->GetVertexCount() / 3) +
-            ", f = " +  QString::number(mw_cont_->GetFasetsCount());
+            ", f = " +  QString::number(mw_cont_->GetFasetsCount()) + ", time = " + QString::number(timer.elapsed());
     statusBar()->showMessage(mes);
     }
 }
