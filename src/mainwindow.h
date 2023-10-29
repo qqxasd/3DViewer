@@ -27,6 +27,7 @@ private:
     void SaveBMP();
     QGifImage* gif_ = NULL;
     QTimer tmr_;
+    QString GetFileName(QString path);
 
 
 private slots:

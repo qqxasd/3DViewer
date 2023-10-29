@@ -11,6 +11,7 @@ class MWController {
   std::vector<std::vector<GLuint>> &GetFasets();
   GLfloat *GetVertexes();
   GLuint GetVertexCount();
+  GLuint GetFasetsCount();
   bool ContainsModel() {
     return model_ != nullptr;
   }
@@ -30,6 +31,7 @@ class MWController {
     ParseCommand pc(model_->GetVertexes(), model_->GetFasets(), path);
     model_->ExecuteCommand(pc);
   }
+
 
  private:
   Model *model_;

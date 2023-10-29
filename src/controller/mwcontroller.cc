@@ -6,6 +6,10 @@ GLfloat *MWController::GetVertexes() { return model_->GetVertexes()->data(); }
 
 GLuint MWController::GetVertexCount() { return model_->GetVertexes()->size(); }
 
+GLuint MWController::GetFasetsCount() {
+    return model_->GetFasets()->size();
+}
+
 std::vector<std::vector<GLuint>> &MWController::GetFasets() {
   return *(model_->GetFasets());
 }

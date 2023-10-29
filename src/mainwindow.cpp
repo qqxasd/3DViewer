@@ -53,6 +53,11 @@ void MainWindow::SaveBMP() {
 
 }
 
+QString MainWindow::GetFileName(QString path) {
+    QStringList sl = path.split('/');
+    return sl.back();
+}
+
 void MainWindow::LoadButtonClicked(){
    QString path = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                "~/", tr("Models (*.obj)"));
@@ -61,8 +66,10 @@ void MainWindow::LoadButtonClicked(){
     mw_cont_->PerformParse(path.toStdString());
 
     ui->viewer->InitModel(mw_cont_->GetVertexCount(), mw_cont_->GetVertexes(), mw_cont_->GetFasets());
-
     ui->viewer->update();
+    QString mes = GetFileName(path) + ", v = " + QString::number(mw_cont_->GetVertexCount()) +
+            ", f = " +  QString::number(mw_cont_->GetFasetsCount());
+    statusBar()->showMessage(mes);
     }
 }
 
