@@ -107,10 +107,3 @@ void ParseCommand::Execute() {
   std::ios::sync_with_stdio(true);
 }
 }  // namespace s21
-
-// int main() {
-//   std::vector<GLfloat> v;
-//   std::vector<std::vector<GLuint>> f;
-//   s21::ParseCommand pc(&v, &f, "../../../one_million.obj");
-//   pc.Execute();
-// }

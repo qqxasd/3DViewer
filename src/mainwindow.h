@@ -11,6 +11,9 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 using namespace s21;
+/**
+ * @brief Mainwindow class, includes everything that needs for work
+*/
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

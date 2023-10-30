@@ -4,15 +4,32 @@
 #include <vector>
 
 #include "OpenGL/OpenGL.h"
+
 #include "command.h"
 
 namespace s21 {
 
+/**
+ * @brief MVC model, there all commands are executed
+*/
 class Model {
  public:
-  Model();
+ /**
+  * @brief default constructor
+ */
+  Model() {}
+  /**
+   * @brief Vertexes getter
+  */
   std::vector<GLfloat> *GetVertexes() noexcept { return &vertexes_; }
+  /**
+   * @brief Fasets getter
+  */
   std::vector<std::vector<GLuint>> *GetFasets() { return &fasets_; }
+  /**
+   * @brief Executes the command
+   * @param command - command to be executed
+  */
   void ExecuteCommand(Command &command) { command.Execute(); }
 
  private:
